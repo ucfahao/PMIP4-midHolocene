@@ -74,4 +74,3 @@ dependencies:
     - regionmask
     - git+https://github.com/dask/dask-labextension.git
     - git+https://github.com/cogeotiff/rio-cogeo.git
-
