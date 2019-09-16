@@ -5,17 +5,19 @@ If this directory is empty then please move into ../scripts and run `./download_
 
 ## PMIP4 Models
 
-Model name | Modelling center | On ESGF | Reference(s) | Contact | In paper
+Model name | Modelling center | On ESGF | Reference(s) | Contact | In plots so far
 --------   | --------         | ------- | --------     | ------- | -------
 AWI-CM2-LR | Alfred Wegener Institute, Germany | No | ? | Gerrit Lohmann | Y
 CESM2 | National Center for Atmospheric Research (NCAR), USA | No | ? | Bette Otto-Bliesner | N
 EC-Earth3 | Stockholm University | No | ? | Qiong Zhang | N
+FGOALS-f/G3 | Chinese Academy of Sciences, Beijing | No |? | Weipeng Zheng | N
 GISS-E2-G | Goddard Institute for Space Studies (GISS), USA | No | ? | Allegra Legrande | N
 HadGEM3-GC31 | Met. Office, UK | No | ? | Charlie Williams | Y
 IPSL-CM6A-LR | Institut Pierre Simon Laplace (IPSL), France | Yes | ? | Pascale Braconnot | Y
 MIROC-ES2L | Japan Agency for Marine-Earth Science and Technology, Atmosphere and Ocean Research Institute (The University of Tokyo), and National Institute for Environmental Studies | No | ? | Rumi Ohgaito | N 
 MPI-ESM2? | Max Planck Institute für Meteorologie (MPI), Germany| No | ? | Roberta D'Agostino | N
 NESM3 | Nanjing University of Information Science and Technology, China | Yes | [Cao et al. (2018)](https://www.geosci-model-dev.net/11/2975/2018/) | Jian Cao | N 
+NorESM(1-F or 2) | Bjerknes Centre for Climate Research, Norway | No | ? | Chuncheng Guo | N
 
 ## PMIP3 Models
 
