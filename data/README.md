@@ -11,7 +11,7 @@ AWI-CM2-LR | Alfred Wegener Institute, Germany | No | ? | Gerrit Lohmann | Y
 CESM2 | National Center for Atmospheric Research (NCAR), USA | No | ? | Bette Otto-Bliesner | N
 EC-Earth3 | Stockholm University | No | ? | Qiong Zhang | N
 FGOALS-f/G3 | Chinese Academy of Sciences, Beijing | No |? | Weipeng Zheng | N
-GISS-E2-G | Goddard Institute for Space Studies (GISS), USA | No | ? | Allegra Legrande | N
+GISS-E2-G | Goddard Institute for Space Studies (GISS), USA | No | ? | Allegra LeGrande | N
 HadGEM3-GC31 | Met. Office, UK | No | ? | Charlie Williams | Y
 IPSL-CM6A-LR | Institut Pierre Simon Laplace (IPSL), France | Yes | ? | Pascale Braconnot | Y
 MIROC-ES2L | Japan Agency for Marine-Earth Science and Technology, Atmosphere and Ocean Research Institute (The University of Tokyo), and National Institute for Environmental Studies | No | ? | Rumi Ohgaito | N 
