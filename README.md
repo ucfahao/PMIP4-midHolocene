@@ -1,7 +1,7 @@
 # PMIP4-midHolocene
 This repository is a live document/analysis needed to write a multi-model manuscript about the PMIP4 midHolocene simulations. It is being coordinated by [Chris Brierley](c.brierley@ucl.ac.uk) and [Anni Zhao](anni.zhao.16@ucl.ac.uk) at University College London. Where people have already agreed to contribute to a particular section, they are mentioned below. But the more-the-merrier, so contact us if you want to help. 
 
-The model status is presented in [data/README.md](data/README.md)You should be able to run this repository on a Pangeo Binder, but be aware that may take 30mins to load everything up to be ready to use
+The model status is presented in [data/README.md](data/README.md). You should be able to run this repository on a Pangeo Binder, but be aware that may take 30mins to load everything up to be ready to use
 [![Binder](https://binder.pangeo.io/badge_logo.svg)](https://binder.pangeo.io/v2/gh/chrisbrierley/PMIP4-midHolocene/master)
 
 ## Manuscript Outline
