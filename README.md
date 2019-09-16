@@ -14,14 +14,14 @@ _This is the current plan for the manuscript. Where we have already created the 
    * PMIP4 overview
    * Summary of midHolocene protocol and differences from PMIP3
    * Participating models
-   	* __Table 1__: PMIP3 and PMIP4 simulations
+   	 * __Table 1__: PMIP3 and PMIP4 simulations
    * Analysis procedure (inc. [PaleoCalAdjust](https://github.com/pjbartlein/PaleoCalAdjust) by @pjbartlein)
-   	* __Fig 1__: impact of calendar adjustment DJF and JJA
+   	 * __Fig 1__: impact of calendar adjustment DJF and JJA
 3. Results
    * Describe Simulated mean climate state and how has it changed in consequence of model improvements and/or higher climate sensitivity
-   	* [__Fig 2__: Annual Mean Temperature: ensemble average and uncertainty maps, PMIP3 vs PMIP4](https://github.com/chrisbrierley/PMIP4-midHolocene/blob/master/notebooks/PMIP4_Mid-Holocene_new.ipynb)
-   	* [__Fig 3__: Changes in seasonal cycle of surface temp: Ensemble average and uncertainty maps, PMIP3 vs PMIP4](https://github.com/chrisbrierley/PMIP4-midHolocene/blob/master/notebooks/PMIP4_Mid-Holocene_new.ipynb)
-   	* [__Fig 4__: Hydrological cycle: ensemble average and uncertainty maps, PMIP3 vs PMIP4](https://github.com/chrisbrierley/PMIP4-midHolocene/blob/master/notebooks/PMIP4_Mid-Holocene_new.ipynb)
+   	 * [__Fig 2__: Annual Mean Temperature: ensemble average and uncertainty maps, PMIP3 vs PMIP4](https://github.com/chrisbrierley/PMIP4-midHolocene/blob/master/notebooks/PMIP4_Mid-Holocene_new.ipynb)
+   	 * [__Fig 3__: Changes in seasonal cycle of surface temp: Ensemble average and uncertainty maps, PMIP3 vs PMIP4](https://github.com/chrisbrierley/PMIP4-midHolocene/blob/master/notebooks/PMIP4_Mid-Holocene_new.ipynb)
+   	 * [__Fig 4__: Hydrological cycle: ensemble average and uncertainty maps, PMIP3 vs PMIP4](https://github.com/chrisbrierley/PMIP4-midHolocene/blob/master/notebooks/PMIP4_Mid-Holocene_new.ipynb)
    * Simulation of the monsoons
 	 * __Fig 5__: Ensemble mean change in global monsoon domain
 	 * __Fig 6__: Changes in individual monsoons (mean and variability, include observations)
