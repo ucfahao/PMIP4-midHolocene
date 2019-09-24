@@ -35,3 +35,19 @@ IPSL-CM5A-LR| Institut Pierre Simon Laplace (IPSL), France| Atm: 96 × 96 × L39
 MIROC-ESM|Japan Agency for Marine-Earth Science and Technology, Atmosphere and Ocean Research Institute (The University of Tokyo), and National Institute for Environmental Studies	|Atm: 128 × 64 × L80; Ocean: 256 × 192 × L44|Sueyoshi et al. (2013) Watanabe et al. (2011)
 MPI-ESM-P|Max Planck Institute für Meteorologie (MPI), Germany|Atm: 196 × 98 × L47;	Ocean: 256 × 220 × L40| Giorgetta et al. (2013)
 MRI-CGCM3|Meteorological Research Institute (MRI), Japan|Atm: 20 × 160 × L48; Ocean: 364 × 368 × L51 | Yukimoto et al. (2012)
+
+## Output Variables
+
+Long name | CMOR/ESGF name | GISS Name	| CESM Name
+--------  | -------- | ----- | --------
+Surface air temperature | tas | tsurf | TREFHT
+Skin Temperature | ts | - | TS
+Sea level pressure | psl | slp | PSL
+precipitation rate | pr | prec | PRECT
+Total cloud fraction | clt | clrsky |CLDTOT
+--------  | -------- | ----- | --------
+Ocean grid areas | areacello | - | TAREA
+Sea surface temperature | tos | sst | SST 
+Sea surface salinity | sos | sss | SALT (top level only)
+Meridional streamfunction | msftmyz | sf_Atl | MOC
+
