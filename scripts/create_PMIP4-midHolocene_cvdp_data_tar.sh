@@ -3,12 +3,24 @@
 # Written by Chris Brierley and only to be used by Chris (relies on stuff on UCL server).
 
 #first define a litte function to say whether a netcdf file has required variables
-# define a function to test whether the contents of the netcdf file is a regular lat,lon) file
 function hasMHvars {
   hasMHvars_DIR=$1
   hasMHvars_filename=$2
-  hasMHvars_nino34_vars=`ncdump -h $hasMHvars_DIR/$hasMHvars_filename | grep float | cut -d\( -f1 | cut -d\  -f2`
-  if [[ $hasMHvars_nino34_vars == *"pr_spatialmean_ann"* ]] && [[ $hasMHvars_nino34_vars == *"tas_spatialmean_ann"* ]] && [[ $hasMHvars_nino34_vars == *"monsoon_domain"* ]]
+  hasMHvars_varnames=`ncdump -h $hasMHvars_DIR/$hasMHvars_filename | grep float | cut -d\( -f1 | cut -d\  -f2`
+  if [[ $hasMHvars_varnames == *"pr_spatialmean_ann"* ]] && [[ $hasMHvars_varnames == *"tas_spatialmean_ann"* ]] && [[ $hasMHvars_varnames == *"monsoon_domain"* ]]
+  then
+    return 1
+  else
+    return 0
+  fi
+}  
+
+# second define a litte function to say whether a netcdf file has the amoc variables
+function hasAMOC {
+  hasAMOC_DIR=$1
+  hasAMOC_filename=$2
+  hasAMOC_varnames=`ncdump -h $hasAMOC_DIR/$hasAMOC_filename | grep float | cut -d\( -f1 | cut -d\  -f2`
+  if [[ $hasAMOC_varnames == *"amoc_mean_ann"* ]]
   then
     return 1
   else
@@ -49,7 +61,12 @@ do
     ncks -O -v $mean_vars $CVDP_DATA_DIR/$ncfile $sub_dir/$ncfile
     ncks -A -v $monsoon_vars $CVDP_DATA_DIR/$ncfile $sub_dir/$ncfile
   fi
+  hasAMOC $CVDP_DATA_DIR $ncfile
+  if [ $? == 1 ]; then
+    ncks -A -v amoc_mean_ann $CVDP_DATA_DIR/$ncfile $sub_dir/$ncfile
+  fi
 done
+
 #plus a couple of obs datasets
 ncks -O -v pr_spatialmean_ann,pr_spatialmean_djf,pr_spatialmean_jja,pr_spatialmean_mam,pr_spatialmean_son,\
 pr_spatialstddev_ann,pr_spatialstddev_djf,pr_spatialstddev_jja,pr_spatialstddev_mam,pr_spatialstddev_son,\
