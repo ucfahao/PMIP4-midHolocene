@@ -26,12 +26,12 @@ _This is the current plan for the manuscript. Where we have already created the 
 	 * __Fig 5__: Ensemble mean change in global monsoon domain
 	 * __Fig 6__: Changes in individual monsoons (mean and variability, include observations)
 4. Data model comparison (w. Sandy Harrison, Julien Emile-Geay)
+   * Comparison with new gradient compilations ([Routson et al., 2019](https://www.nature.com/articles/s41586-019-1060-3) esp. focus on ocean)
+   	 * __Fig 10__: Change in latitudinal gradients vs data
    * Impact of new terrestrial data synthesis on dmc. Sandy Harrison](s.p.harrison@reading.ac.uk)
    	 * __Fig 7__: comparing Bartlein vs Cleator data sets at sites where both (all variables)
    	 * __Fig 8__: Taylor diagrams for all six variables, old data vs new data, different symbols for PMIP3 and PMIP4
    	 * __Fig 9__: Benchmarking carpet plot
-   * Comparison with new gradient compilations ([Routson et al., 2019](https://www.nature.com/articles/s41586-019-1060-3) esp. focus on ocean)
-   	 * __Fig 10__: Change in latitudinal gradients vs data
    * ENSO amplitude in comparison [Emile-Geay et al., 2015](https://github.com/CommonClimate/EmileGeay_NatGeo2015) compilation by @CommonClimate
    	 * __Fig 11__: Changes in annual cycle and interannual variability in pseudocorals in Tropical Pacific
 5. Discussion (w. Julia Hargreaves)
