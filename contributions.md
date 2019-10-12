@@ -6,11 +6,12 @@ __This is currently in reverse alphabetical order__
 * Weipeng Zheng (IAP-CAS)
 * Zhongshi Zhang (Bergen)
 * Qiong Zhang (Stockholm)
+* Hu Yang (AWI)
 * Charlie Williams (Bristol)
 * Xiaoxu Shi (AWI)
 * Bette Otto-Bliesner (NCAR)
 * Rumi Ohgaito (Jamstec)
-* Nick Mackay (N. Arizona)
+* Nick Mckay (N. Arizona)
 * Gerrit Lohmann (AWI)
 * Allegra LeGrande (NASA)
 * Darrell Kaufmann (N. Arizona)
@@ -26,6 +27,7 @@ __This is currently in reverse alphabetical order__
 * Pascale Braconnot (LSCE)
 * Esther Brady (NCAR)
 * Patrick Bartlein (Oregon)
+* Ayako Abe-Ouchi (Tokyo)
 
 ## Writing Responsibilities##
 
