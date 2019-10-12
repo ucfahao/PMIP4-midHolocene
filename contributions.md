@@ -45,7 +45,7 @@
 |39| | | Provide an overview of PMIP4 vs PMIP3. Conclude by commenting on whether we can treat both as a combined ensemble, or if fundamentally different.|
 |40| | | Intro paragraph outlining benefits of DMC, and its potential uses. Shout back to previous efforts.|
 |41| | | Describe the various mechanisms by which temperature can be reconstructed. Describe new data compilation coordinated by N. Arizona.|
-|42|Compare the latitudinal reconstructed temperatures to simulated changes. Resulting in something looking like Fig. \ref{fig:DTlatbands}.|
+|42| | | Compare the latitudinal reconstructed temperatures to simulated changes. Resulting in something looking like Fig. \ref{fig:DTlatbands}.|
 |43| | | Introduce pollen reconstructions of climate. Stress how can be used for multiple variables, adn mainstay of DMC in PMIP.|
 |44| | | Describe new Cleator et al reconstruction and data assimilation procedure. State how it compares to Bartlein et al. reconstruction (like in Fig. \ref{fig:CleatorvsBart}).|
 |45| | | Compare Cleator et al reconstruction to PMIP simulations via Taylor diagram. Show invidual models, for different variables. Will look something like Fig. \ref{fig:taylor}.|
