@@ -16,7 +16,7 @@ HadGEM3-GC31 | Met. Office, UK | No | ? | Charlie Williams | Y
 IPSL-CM6A-LR | Institut Pierre Simon Laplace (IPSL), France | Yes | ? | Pascale Braconnot | Y
 MIROC-ES2L | Japan Agency for Marine-Earth Science and Technology, Atmosphere and Ocean Research Institute (The University of Tokyo), and National Institute for Environmental Studies | Yes | ? | Rumi Ohgaito | N 
 MPI-ESM2? | Max Planck Institute für Meteorologie (MPI), Germany | No | ? | Roberta D'Agostino | N
-MRI-ESM? | Japan | Yes | ? | ? | N
+MRI-ESM2 | Japan | Yes | ? | Seiji Yukimoto | N
 NESM3 | Nanjing University of Information Science and Technology, China | Yes | [Cao et al. (2018)](https://www.geosci-model-dev.net/11/2975/2018/) | Jian Cao | N 
 NorESM1-F | Bjerknes Centre for Climate Research, Norway | Yes | ? | Chuncheng Guo | N
 NorESM2 | Bjerknes Centre for Climate Research, Norway | No | ? | Zhongshi Zhang | N
