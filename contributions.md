@@ -9,9 +9,10 @@ __This is currently in reverse alphabetical order__
 * Hu Yang (AWI)
 * Charlie Williams (Bristol)
 * Xiaoxu Shi (AWI)
+* Dick Peltier (Toronto)
 * Bette Otto-Bliesner (NCAR)
 * Rumi Ohgaito (Jamstec)
-* Nick Mckay (N. Arizona)
+* Nick McKay (N. Arizona)
 * Gerrit Lohmann (AWI)
 * Allegra LeGrande (NASA)
 * Darrell Kaufmann (N. Arizona)
@@ -53,18 +54,18 @@ __This is currently in reverse alphabetical order__
 |18| | | Monsoon domain definition. How treating calendar adjustment in this component. highlight differences to standard defintion, to better fit paleoruns/variability. Code available...|
 |19| | | How calculate variables for data-model comparison - MTCO, MTWA, but mainly pseudocorals.|
 |20| | | Bland introductory paragraph saying what is to come in this section, and that it is important.|
-|21| | | Describe large-scale features - interhemispheric gradient etc from Fig. \ref{fig:tempdiff}. Compare to expected result from insolation forcings|
+|21| Deepak Chandan | | Describe large-scale features - interhemispheric gradient etc from Fig. \ref{fig:tempdiff}. Compare to expected result from insolation forcings|
 |22| | | Describe dominant seasonality changes from Fig. \ref{fig:tempdiff}.|
 |23| | | Discuss ensemble consistency. Look at spread between GCMs. Say where high and low.|
-|24| | | describe the differences between the PMIP generations by looking at the Fig. \ref{fig:tempdiff}|
-|25| | | Significance - we don't plan to calculate this statistically (not sure of robust stats methid with these small, non-normal ensembles), but by comparing images we should speculate of the importance of any differences.|
-|26| | | Describe large-scale features - ITCZ shift etc from Fig. \ref{fig:rainfall}. Compare to expected result from insolation forcings|
+|24| Deepak Chandan | | Describe the differences between the PMIP generations by looking at the Fig. \ref{fig:tempdiff}|
+|25| | | Significance - we don't plan to calculate this statistically (not sure of robust stats method with these small, non-normal ensembles), but by comparing images we should speculate of the importance of any differences.|
+|26| Roberta D'Agostino | | Describe large-scale features - ITCZ shift etc from Fig. \ref{fig:rainfall}. Compare to expected result from insolation forcings|
 |27| | | Describe dominant seasonality changes from Fig. \ref{fig:rainfall}.|
 |28| | | Discuss ensemble consistency. Look at spread between GCMs. Say where high and low.|
-|29| | | describe the differences between the PMIP generations by looking at the Fig.from Fig. \ref{fig:rainfall||
+|29| Roberta D'Agostino | | describe the differences between the PMIP generations by looking at the Fig.from Fig. \ref{fig:rainfall||
 |30| | | Significance - we don't plan to calculate this statistically (not sure of robust stats methid with these small, non-normal ensembles), but by comparing images we should speculate of the importance of any differences.|
-|31| | | Description of what the global monsoon domain actually is|
-|32| | | What do the models suggest for midHolocene changes in the global monsoon domain (Fig. \ref{fig:globalmonsoon})? |
+|31| Roberta D'Agostino | | Description of what the global monsoon domain actually is|
+|32| Roberta D'Agostino | | What do the models suggest for midHolocene changes in the global monsoon domain (Fig. \ref{fig:globalmonsoon})? |
 |33| | | Describe changes in North African monsoon domain. Explain different metrics - expansion of area, average pr rate (Fig. \ref{fig:individualmonsoons})? |
 |34| | | Describe changes in Asian monsoon domains. Compare PMIP4 to PMIP3|
 |35| | | Describe changes other monsoons (S. Amer, N. Amer, AUSMC, S. African). Compare PMIP4 to PMIP3|
