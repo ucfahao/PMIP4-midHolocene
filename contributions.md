@@ -8,7 +8,9 @@ __This is currently in reverse alphabetical order__
 * Qiong Zhang (Stockholm)
 * Hu Yang (AWI)
 * Charlie Williams (Bristol)
+* David Thornalley (UCL)
 * Xiaoxu Shi (AWI)
+* Cody Rouston (N. Arizona)
 * Dick Peltier (Toronto)
 * Bette Otto-Bliesner (NCAR)
 * Rumi Ohgaito (Jamstec)
@@ -38,8 +40,8 @@ __This is currently in reverse alphabetical order__
 |2| | | A description/layout of paper. Summarise past work, describe expt/methods, present simulations, compare to previous simulations, present data compilations, evaluate against these data compilations, discuss findings and potential for future analyses.|
 |3| | | Explanation of the mid-Holocene as a climate period, in context of deglacation, Holocene and Anthropocene.|
 |4| | | PMIP as part of CMIP. The midHolocene in previous PMIP efforts|
-|5| | | model-only findings from previous PMIP midHolocene papers|
-|6| | | data-model comparison findings from previous PMIP midHolocene papers|
+|5| Michael Erb | | model-only findings from previous PMIP midHolocene papers|
+|6| Michael Erb | | data-model comparison findings from previous PMIP midHolocene papers|
 |7| | | Bland introduction of methods|
 |8| Charlie Williams | | Overview of midHolocene orbital conditions |
 |9| | | Discussion of GHG concentrations and aerosols. Changes from PMIP3|
