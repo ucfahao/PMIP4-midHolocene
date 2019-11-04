@@ -29,7 +29,7 @@ function hasAMOC {
 }  
 
 
-CVDP_DATA_DIR="/data/p2f/cvdp_data"
+CVDP_DATA_DIR="/home/p2f-v/public_html/PMIPVarData/cvdp_data"
 REPO_DATA_DIR=`pwd`"/../data" #relative to here
 mean_vars="pr_spatialmean_ann,pr_spatialmean_djf,pr_spatialmean_jja,pr_spatialmean_mam,pr_spatialmean_son,pr_spatialstddev_ann,pr_spatialstddev_djf,pr_spatialstddev_jja,pr_spatialstddev_mam,pr_spatialstddev_son,tas_spatialmean_ann,tas_spatialmean_djf,tas_spatialmean_jja,tas_spatialmean_mam,tas_spatialmean_son,tas_spatialstddev_ann,tas_spatialstddev_djf,tas_spatialstddev_jja,tas_spatialstddev_mam,tas_spatialstddev_son"
 monsoon_vars="monsoon_area_AUSMC,monsoon_area_EAS,monsoon_area_NAF,monsoon_area_NAMS,monsoon_area_SAF,monsoon_area_SAMS,monsoon_area_SAS,monsoon_area_global,monsoon_domain,monsoon_rain_AUSMC,monsoon_rain_EAS,monsoon_rain_NAF,monsoon_rain_NAMS,monsoon_rain_SAF,monsoon_rain_SAMS,monsoon_rain_SAS,monsoon_rain_global"
@@ -87,4 +87,16 @@ monsoon_rain_NAMS,monsoon_rain_SAF,monsoon_rain_SAMS,monsoon_rain_SAS,monsoon_ra
 #make a .tar.gz archive
 rm PMIP4_midHolocence_cvdp_data.tar.gz
 tar -czf PMIP4_midHolocence_cvdp_data.tar.gz */*.cvdp_data.*-*.nc C20-Reanalysis.cvdp_data.1871-2012.nc GPCP.cvdp_data.1979-1999.nc
-cp PMIP4_midHolocence_cvdp_data.tar.gz ~/public_html/PMIPVarData/data/PMIP4_midHolocence_cvdp_data.tar.gz
+cp PMIP4_midHolocence_cvdp_data.tar.gz ~/public_html/PMIPVarData/cvdp_data/PMIP4_midHolocence_cvdp_data.tar.gz
+
+#Populate for_DMC directory
+mkdir for_DMC
+cd for_DMC
+files=`ls /data/CMIP/curated_ESGF_replica/*/midHolocene-cal-adj/preprocessed/*pollen*.nc`
+for fil in $files
+do
+  ln -s $fil ${fil##*/}
+done
+rm PMIP34_midHolocene_changes_for_DMC.zip
+zip PMIP34_midHolocene_changes_for_DMC.zip *pollen*nc
+cp PMIP34_midHolocene_changes_for_DMC.zip ~/public_html/PMIPVarData/cvdp_data/PMIP34_midHolocene_changes_for_DMC.zip
