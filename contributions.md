@@ -39,7 +39,7 @@ __This is currently in reverse alphabetical order__
 |1|Y|Chris | | An gentle introduction of the idea of using past simulations to evaluate future ones.|
 |2|Y|Chris | | A description/layout of paper. Summarise past work, describe expt/methods, present simulations, compare to previous simulations, present data compilations, evaluate against these data compilations, discuss findings and potential for future analyses.|
 |3|N| | | Explanation of the mid-Holocene as a climate period, in context of deglacation, Holocene and Anthropocene.|
-|4|N| | | PMIP as part of CMIP. The midHolocene in previous PMIP efforts|
+|4|X| Removed | | PMIP as part of CMIP. The midHolocene in previous PMIP efforts|
 |5|Y| Michael Erb | | model-only findings from previous PMIP midHolocene papers|
 |6|Y| Michael Erb | | data-model comparison findings from previous PMIP midHolocene papers|
 |7|Y|Chris | | Bland introduction of methods|
@@ -77,12 +77,12 @@ __This is currently in reverse alphabetical order__
 |37|Y|Chris | | Description of changes in AMOC using Fig. \ref{fig:amoc}. They seem fairly non-existent so far)|
 |38|N| Charlie Williams | | Sum up the results from the PMIP4 simulations. Mainly just repeat what's above.|
 |39|N| | | Provide an overview of PMIP4 vs PMIP3. Conclude by commenting on whether we can treat both as a combined ensemble, or if fundamentally different.|
-|40|N| | | Intro paragraph outlining benefits of DMC, and its potential uses. Shout back to previous efforts.|
+|40|Y| Chris | | Intro paragraph outlining benefits of DMC, and its potential uses. Shout back to previous efforts.|
 |41|Y| Darrell Kaufmann | | Describe the various mechanisms by which temperature can be reconstructed. Describe new data compilation coordinated by N. Arizona.|
 |42|Y| Chris | | Compare the latitudinal reconstructed temperatures to simulated changes. Resulting in something looking like Fig. \ref{fig:DTlatbands}.|
-|43|N| | | Introduce pollen reconstructions of climate. Stress how can be used for multiple variables, adn mainstay of DMC in PMIP.|
+|43|Y| Chris | | Introduce pollen reconstructions of climate. Stress how can be used for multiple variables, adn mainstay of DMC in PMIP.|
 |44|X| Removed | | Describe new Cleator et al reconstruction and data assimilation procedure. State how it compares to Bartlein et al. reconstruction (like in Fig. \ref{fig:CleatorvsBart}).|
-|45|N| | | Describe update of AR5 Fig9.11d.|
+|45|Y| Chris | | Describe update of AR5 Fig9.11d.|
 |46|N| | | Culminate this DMC section via Taylor diagram. Show invidual models, for different variables. |
 |47|N| ? | | Describe how we think ENSO was different during the midHolocene. Reference some papers. Introduce Emile-Geay et al (2015, Nature Geoscience) paper as the current compilation of paleoENSO|
 |48|N| ? | | Describe pseudocoral method and advantages of using 'forward model' for DMC|
