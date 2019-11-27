@@ -32,7 +32,7 @@ __This is currently in reverse alphabetical order__
 * Patrick Bartlein (Oregon)
 * Ayako Abe-Ouchi (Tokyo)
 
-## Writing Responsibilities##
+## Writing Responsibilities
 
 |Paragraph|Written|Author|Editor|Description|
 | :--- |:---: | :---: | :---: | ---: |
@@ -89,6 +89,6 @@ __This is currently in reverse alphabetical order__
 |49|N| Julien Emile-Geay | | Present and discuss comparison between PMIP4 ENSO, data and PMIP3. Will need a figure, perhaps something like Fig. \ref{fig:enso}|
 |50|N| | | Provide and overarching summary of the data-model comparison. Provide preliminary answer as to whether PMIP4 is better that PMIP3. (I suspect it will be "In some cases, yes. In some places longstanding biases still exist though").|
 |51|N| | | Make some recommendations about what datasets may be more informative in future. Basically just make a shout-out for upcoming data compilations. Comment on role of isotope enabled models (some here are, but we're not using that capacity) and forward proxy models.|
-|52|N| | | Explain again what PMIP4 and its midHolocene simulation are|
-|53|N| | | Summarise the model results shown in this paper. A sentence each on the various sections|temperatures, rainfall, monsoons, AMOC.|
-|54|N| | | Summarise the data model comparison results. Say we have evaluated the models. Highlight possibility of formally bringing that evaluation through to projections with some past2future emergent constraint applications.|
+|52|Y|Chris | | Explain again what PMIP4 and its midHolocene simulation are|
+|53|Y|Chris | | Summarise the model results shown in this paper. A sentence each on the various sections|temperatures, rainfall, monsoons, AMOC.|
+|54|Y|Chris, but needs help | | Summarise the data model comparison results. Say we have evaluated the models. Highlight possibility of formally bringing that evaluation through to projections with some past2future emergent constraint applications.|
