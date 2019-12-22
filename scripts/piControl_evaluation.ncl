@@ -3,18 +3,41 @@
 ; It makes 1 table (showing simulations used) and many figures. 
 
 ;load some functions
-loadscript("./cvdp_data_PMIP4-midHolocene.functions.ncl")
+loadscript("/home/ucfaccb/Documents/local_repos/cvdp_pmip/data_scripts/cvdp_data.functions.ncl")
 plots_dir="../plots/"
 
 ;some plot switches
+EARLY_INDUSTRIAL=True; uses a 1871-1900 climatological period rather than a 1971-2000 one. 
+CMIP5=False; uses only the old models
+lig127k=True; plot CMIP6 for the lig127k ensemble instead of the midHolocene one. 
 VERBOSE=False ;if True, provides a modicum of more information about whats going on in the plots - used for debugging mainly.
 OUTPUT_TYPE="pdf"; either "png" or "pdf"
 INC_PREIND_wHIST=True; adds the preindustrial to all the plots including the Historical 
 expts=(/"piControl","historical","midHolocene","lgm","lig127k","1pctCO2","abrupt4xCO2"/)
 expts_color=(/"grey60","black","darkgreen","dodgerblue4","yellowgreen","firebrick","orangered2"/)
 
-wks=gsn_open_wks(OUTPUT_TYPE,plots_dir+"piControl_evaluation")
+if CMIP5 then
+  endstr="_PMIP3_midHolocene"
+else
+  if lig127k then
+    endstr="_PMIP4_lig127k"
+  else
+    endstr="_PMIP4_midHolocene"
+  end if
+end if
+data_dir="/home/p2f-v/public_html/PMIPVarData/cvdp_data"+endstr
+
+if EARLY_INDUSTRIAL then 
+  wks=gsn_open_wks(OUTPUT_TYPE,plots_dir+"piControl_evaluation_EI"+endstr)
+  C20_version="C20-Reanal-EI"
+else 
+  wks=gsn_open_wks(OUTPUT_TYPE,plots_dir+"piControl_evaluation"+endstr)
+  C20_version="C20-Reanalysis"
+end if
 wks@VERBOSE=VERBOSE
+
+;set the ensemble
+
 opt=True
   opt@cnLevelSelectionMode = "ManualLevels"   
   opt@cnMinLevelValF       = 0
@@ -39,7 +62,7 @@ opt_pan=True
   opt@gsnRightString="C20-Reanalysis"
   opt@gsnLeftString="a"
   opt_pan@lbTitleString=opt@lbTitleString
-  plotCVDPcomparisonMaps("C20-Reanalysis","tas_spatialmean_ann",wks,opt,opt_pan)
+  plotCVDPcomparisonMaps(data_dir,C20_version,"tas_spatialmean_ann",wks,opt,opt_pan)
 
 ;temperature biases
   opt@cnFillPalette="CBR_coldhot"
@@ -51,7 +74,7 @@ opt_pan=True
   opt_pan@gsnPanelLeft=0.5
   opt_pan@gsnPanelRight=1.0
   opt@gsnRightString="Ensemble Mean Bias"
-  plotDiffEnsMnMaps("piControl","C20-Reanalysis","tas_spatialmean_ann",wks,opt,opt_pan)
+  plotDiffEnsMnMaps(data_dir,"piControl",C20_version,"tas_spatialmean_ann",wks,opt,opt_pan)
   delete([/opt@gsnRightString,opt@CONSISTENCY,opt@lbTitleString,opt@gsnLeftString,opt_pan@gsnRightString,opt_pan@lbTitleString,opt_pan@gsnLeftString/])
 
 ;Move onto precip
@@ -71,7 +94,7 @@ opt_pan=True
   opt@lbTitleString="Precipitation Rate (mm/day)"
   opt_pan@lbTitleString="Precipitation Rate (mm/day)"
   opt_pan@dims=(/2,1/)
-plotCVDPcomparisonMaps("GPCP",(/"pr_spatialmean_djf","pr_spatialmean_jja"/),wks,opt,opt_pan)
+plotCVDPcomparisonMaps(data_dir,"GPCP",(/"pr_spatialmean_djf","pr_spatialmean_jja"/),wks,opt,opt_pan)
 
 
 ;And do the precip differences
@@ -87,7 +110,7 @@ plotCVDPcomparisonMaps("GPCP",(/"pr_spatialmean_djf","pr_spatialmean_jja"/),wks,
   opt_pan@gsnLeftString=(/"d","f"/)
   opt@gsnLeftString=opt_pan@gsnLeftString
   opt_pan@lbTitleString=opt@lbTitleString
-plotDiffEnsMnMaps("piControl","GPCP",(/"pr_spatialmean_djf","pr_spatialmean_jja"/),wks,opt,opt_pan)
+plotDiffEnsMnMaps(data_dir,"piControl","GPCP",(/"pr_spatialmean_djf","pr_spatialmean_jja"/),wks,opt,opt_pan)
 
 frame(wks)
 delete(wks)

@@ -31,14 +31,14 @@ function hasAMOC {
 
 CVDP_DATA_DIR="/home/p2f-v/public_html/PMIPVarData/cvdp_data"
 REPO_DATA_DIR=`pwd`"/../data" #relative to here
-mean_vars="pr_spatialmean_ann,pr_spatialmean_djf,pr_spatialmean_jja,pr_spatialmean_mam,pr_spatialmean_son,pr_spatialstddev_ann,pr_spatialstddev_djf,pr_spatialstddev_jja,pr_spatialstddev_mam,pr_spatialstddev_son,tas_spatialmean_ann,tas_spatialmean_djf,tas_spatialmean_jja,tas_spatialmean_mam,tas_spatialmean_son,tas_spatialstddev_ann,tas_spatialstddev_djf,tas_spatialstddev_jja,tas_spatialstddev_mam,tas_spatialstddev_son"
+mean_vars="pr_spatialmean_ann,pr_spatialmean_djf,pr_spatialmean_jja,pr_spatialmean_mam,pr_spatialmean_son,pr_spatialstddev_ann,pr_spatialstddev_djf,pr_spatialstddev_jja,pr_spatialstddev_mam,pr_spatialstddev_son,tas_spatialmean_ann,tas_spatialmean_djf,tas_spatialmean_jja,tas_spatialmean_mam,tas_spatialmean_son,tas_spatialstddev_ann,tas_spatialstddev_djf,tas_spatialstddev_jja,tas_spatialstddev_mam,tas_spatialstddev_son,tas_coldestmonth,tas_coldestmonth_stddev,tas_warmestmonth,tas_warmestmonth_stddev,tas_seasonality,tas_seasonality_stddev"
 monsoon_vars="monsoon_area_AUSMC,monsoon_area_EAS,monsoon_area_NAF,monsoon_area_NAMS,monsoon_area_SAF,monsoon_area_SAMS,monsoon_area_SAS,monsoon_area_global,monsoon_domain,monsoon_rain_AUSMC,monsoon_rain_EAS,monsoon_rain_NAF,monsoon_rain_NAMS,monsoon_rain_SAF,monsoon_rain_SAMS,monsoon_rain_SAS,monsoon_rain_global"
 
 cd $CVDP_DATA_DIR
-ncfiles=`ls *{piControl,historical,midHolocene-cal-adj,midHolocene,abrupt4xCO2}.cvdp_data.*-*.nc`
+ncfiles=`ls *{piControl,historical,midHolocene-cal-adj,midHolocene,abrupt4xCO2,lgm-cal-adj,lig127k-cal-adj}.cvdp_data.*-*.nc`
 echo $ncfiles
 cd $REPO_DATA_DIR
-mkdir -p piControl historical midHolocene-cal-adj midHolocene abrupt4xCO2
+mkdir -p piControl historical midHolocene-cal-adj midHolocene abrupt4xCO2 lgm-cal-adj lig127k-cal-adj
 for ncfile in $ncfiles
 do
   echo working on $ncfile
@@ -49,6 +49,10 @@ do
         sub_dir="historical";;
     *"midHolocene-cal-adj"*)
         sub_dir="midHolocene-cal-adj";;
+    *"lgm-cal-adj"*)
+        sub_dir="lgm-cal-adj";;
+    *"lig127k-cal-adj"*)
+        sub_dir="lig127k-cal-adj";;
     *"midHolocene"*)
         sub_dir="midHolocene";;
     *"abrupt4xCO2"*)
@@ -87,7 +91,7 @@ monsoon_rain_NAMS,monsoon_rain_SAF,monsoon_rain_SAMS,monsoon_rain_SAS,monsoon_ra
 #make a .tar.gz archive
 rm PMIP4_midHolocence_cvdp_data.tar.gz
 tar -czf PMIP4_midHolocence_cvdp_data.tar.gz */*.cvdp_data.*-*.nc C20-Reanalysis.cvdp_data.1871-2012.nc GPCP.cvdp_data.1979-1999.nc
-cp PMIP4_midHolocence_cvdp_data.tar.gz ~/public_html/PMIPVarData/cvdp_data/PMIP4_midHolocence_cvdp_data.tar.gz
+cp PMIP4_midHolocence_cvdp_data.tar.gz ~/public_html/PMIPVarData/data/PMIP4_midHolocence_cvdp_data.tar.gz
 
 #Populate for_DMC directory
 mkdir for_DMC
@@ -99,4 +103,4 @@ do
 done
 rm PMIP34_midHolocene_changes_for_DMC.zip
 zip PMIP34_midHolocene_changes_for_DMC.zip *pollen*nc
-cp PMIP34_midHolocene_changes_for_DMC.zip ~/public_html/PMIPVarData/cvdp_data/PMIP34_midHolocene_changes_for_DMC.zip
+cp PMIP34_midHolocene_changes_for_DMC.zip ~/public_html/PMIPVarData/data/PMIP34_midHolocene_changes_for_DMC.zip
