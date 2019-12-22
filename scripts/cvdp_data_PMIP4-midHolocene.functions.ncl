@@ -49,7 +49,12 @@ begin
   else
     QUIET=False
   end if
-  ncfiles=systemfunc("ls "+data_dir+"/*.cvdp_data.[0-9]*-*.nc "+data_dir+"/"+name_str+"/*.cvdp_data.[0-9]*-*.nc")
+  if isStrSubset(name_str,"_") then
+    ;provided string must contain both a gcm and an expt
+    ncfiles=systemfunc("ls "+data_dir+"/*.cvdp_data.[0-9]*-*.nc "+data_dir+"/*/"+name_str+".cvdp_data.[0-9]*-*.nc")
+  else
+    ncfiles=systemfunc("ls "+data_dir+"/*.cvdp_data.[0-9]*-*.nc "+data_dir+"/"+name_str+"/*.cvdp_data.[0-9]*-*.nc")
+  end if
   if any(ismissing(ncfiles)) then
     if .not.QUIET then
      print("find_files_wVar: There are no cvdp_data netcdf files in "+data_dir+". You may want to run the download_cvdp_data_data.sh script")
@@ -630,7 +635,11 @@ begin
           stat_out=default_fillvalue("float")
           stat_out@_FillValue=default_fillvalue("float")
         else
-          stat_out=stats(stat_ind)
+          if stat_name.eq."stddev" then
+            stat_out=sqrt(stats(stat_ind))
+          else
+            stat_out=stats(stat_ind)
+          end if
         end if 
       end if
       copy_VarAtts(var_in,stat_out)
@@ -1893,7 +1902,7 @@ begin
   ;check to see if either str identifies a single simulation
   fnames_a=find_files_wVar(expt_str_a,variable_name)
   fnames_b=find_files_wVar(expt_str_b,variable_name)
-  if dimsizes(fnames_a).eq.1.or.dimsizes(fnames_b).eq.1 then
+  if dimsizes(fnames_a).eq.1.or.dimsizes(fnames_b).eq.1.and..not.all(ismissing(fnames_a)) then
     str=expt_str_a+"_source_files"
     fAtt@$str$   =  str_join(fnames_a,",")
     str=expt_str_b+"_source_files"
@@ -2093,23 +2102,25 @@ begin
   end if
     
   ;use modified version of symMinMaxPlt to spread 5-95% range
-  stats=stat_dispersion(ensmn_diff,False)
-  if RATIO then
-    cmnmx=max((/fabs(stats(24)-1), fabs(stats(25)-1)/))
-    mnmxint = nice_mnmxintvl(1-cmnmx,1+cmnmx,20,True)
-  else
-    cmnmx=max((/fabs(stats(24)), fabs(stats(25))/) )
-    mnmxint = nice_mnmxintvl( -cmnmx, cmnmx,20,True)
+  if .not.isatt(mapres,"cnLevelSelectionMode") then
+    stats=stat_dispersion(ensmn_diff,False)
+    if RATIO then
+      cmnmx=max((/fabs(stats(24)-1), fabs(stats(25)-1)/))
+      mnmxint = nice_mnmxintvl(1-cmnmx,1+cmnmx,20,True)
+    else
+      cmnmx=max((/fabs(stats(24)), fabs(stats(25))/) )
+      mnmxint = nice_mnmxintvl( -cmnmx, cmnmx,20,True)
+    end if
+    mapres@cnLevelSelectionMode = "ManualLevels"   
+    mapres@cnMinLevelValF       = mnmxint(0)
+    mapres@cnMaxLevelValF       = mnmxint(1)
+    if (isnan_ieee(mnmxint(2))) then            ; extreme case
+      mapres@cnLevelSpacingF  = 1.0
+    else
+      mapres@cnLevelSpacingF  = mnmxint(2)
+    end if
   end if
-  mapres@cnLevelSelectionMode = "ManualLevels"   
-  mapres@cnMinLevelValF       = mnmxint(0)
-  mapres@cnMaxLevelValF       = mnmxint(1)
-  if (isnan_ieee(mnmxint(2))) then            ; extreme case
-    mapres@cnLevelSpacingF  = 1.0
-  else
-    mapres@cnLevelSpacingF  = mnmxint(2)
-  end if
-   
+
   if OVERLAY_CONTROL then
     res2 = True
     res2@cnLevelSelectionMode = "ManualLevels"     ; set manual contour levels
@@ -2147,7 +2158,7 @@ begin
     else
       ;default confidence level is 0.66 (i.e. IPCC's "likely")
       ;pick a number just below 2/3 to make sure that 2 of 3 sims gets colored.
-      confidence_level=0.655
+      confidence_level=0.655 
     end if
     conf_res@cnLevelSelectionMode = "ExplicitLevels"
     conf_res@gsnRightString=""
