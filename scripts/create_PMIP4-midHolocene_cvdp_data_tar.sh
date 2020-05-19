@@ -28,35 +28,44 @@ function hasAMOC {
   fi
 }  
 
+# thirdly define a litte function to say whether a netcdf file has the seasonal extent of NH sea ice
+function hasNHice {
+  hasNHice_DIR=$1
+  hasNHice_filename=$2
+  hasNHice_varnames=`ncdump -h $hasNHice_DIR/$hasNHice_filename | grep float | cut -d\( -f1 | cut -d\  -f2`
+  if [[ $hasNHice_varnames == *"sic_nh_extent_climo"* ]]
+  then
+    return 1
+  else
+    return 0
+  fi
+}  
 
+
+#set up some paths and aliases
 CVDP_DATA_DIR="/home/p2f-v/public_html/PMIPVarData/cvdp_data"
 REPO_DATA_DIR=`pwd`"/../data" #relative to here
-mean_vars="pr_spatialmean_ann,pr_spatialmean_djf,pr_spatialmean_jja,pr_spatialmean_mam,pr_spatialmean_son,pr_spatialstddev_ann,pr_spatialstddev_djf,pr_spatialstddev_jja,pr_spatialstddev_mam,pr_spatialstddev_son,tas_spatialmean_ann,tas_spatialmean_djf,tas_spatialmean_jja,tas_spatialmean_mam,tas_spatialmean_son,tas_spatialstddev_ann,tas_spatialstddev_djf,tas_spatialstddev_jja,tas_spatialstddev_mam,tas_spatialstddev_son,tas_coldestmonth,tas_coldestmonth_stddev,tas_warmestmonth,tas_warmestmonth_stddev,tas_seasonality,tas_seasonality_stddev"
-monsoon_vars="monsoon_area_AUSMC,monsoon_area_EAS,monsoon_area_NAF,monsoon_area_NAMS,monsoon_area_SAF,monsoon_area_SAMS,monsoon_area_SAS,monsoon_area_global,monsoon_domain,monsoon_rain_AUSMC,monsoon_rain_EAS,monsoon_rain_NAF,monsoon_rain_NAMS,monsoon_rain_SAF,monsoon_rain_SAMS,monsoon_rain_SAS,monsoon_rain_global"
+mean_vars="pr_spatialmean_ann,pr_spatialmean_djf,pr_spatialmean_jja,pr_spatialstddev_ann,pr_spatialstddev_djf,pr_spatialstddev_jja,tas_spatialmean_ann,tas_spatialmean_djf,tas_spatialmean_jja,tas_spatialstddev_ann,tas_spatialstddev_djf,tas_spatialstddev_jja,tas_coldestmonth,tas_coldestmonth_stddev,tas_warmestmonth,tas_warmestmonth_stddev,tas_seasonality,tas_seasonality_stddev"
+monsoon_vars="monsoon_area_AUSMC,monsoon_area_EAS,monsoon_area_NAF,monsoon_area_NAMS,monsoon_area_SAF,monsoon_area_SAMS,monsoon_area_SAS,monsoon_area_global,monsoon_domain,monsoon_rain_AUSMC,monsoon_rain_EAS,monsoon_rain_NAF,monsoon_rain_NAMS,monsoon_rain_SAF,monsoon_rain_SAMS,monsoon_rain_SAS,monsoon_domain,monsoon_summer_rainrate,monsoon_intensity"
+amoc_vars="amoc_mean_ann,amoc_timeseries_ann"
+ice_vars="sic_nh_extent_climo"
 
+#Collect all the relevant data from the files
 cd $CVDP_DATA_DIR
-ncfiles=`ls *{piControl,historical,midHolocene-cal-adj,midHolocene,abrupt4xCO2,lgm-cal-adj,lig127k-cal-adj}.cvdp_data.*-*.nc`
+ncfiles=`ls *{piControl,midHolocene-cal-adj,midHolocene}.cvdp_data.*-*.nc`
 echo $ncfiles
 cd $REPO_DATA_DIR
-mkdir -p piControl historical midHolocene-cal-adj midHolocene abrupt4xCO2 lgm-cal-adj lig127k-cal-adj
+mkdir -p piControl midHolocene-cal-adj midHolocene
 for ncfile in $ncfiles
 do
   echo working on $ncfile
   case $ncfile in
     *"piControl"*)
        sub_dir="piControl";;
-    *"historical"*)
-        sub_dir="historical";;
     *"midHolocene-cal-adj"*)
         sub_dir="midHolocene-cal-adj";;
-    *"lgm-cal-adj"*)
-        sub_dir="lgm-cal-adj";;
-    *"lig127k-cal-adj"*)
-        sub_dir="lig127k-cal-adj";;
     *"midHolocene"*)
         sub_dir="midHolocene";;
-    *"abrupt4xCO2"*)
-        sub_dir="abrupt4xCO2";;
     *)
         echo "INVALID FILE";;
   esac
@@ -67,40 +76,36 @@ do
   fi
   hasAMOC $CVDP_DATA_DIR $ncfile
   if [ $? == 1 ]; then
-    ncks -A -v amoc_mean_ann $CVDP_DATA_DIR/$ncfile $sub_dir/$ncfile
+    ncks -A -v $amoc_vars $CVDP_DATA_DIR/$ncfile $sub_dir/$ncfile
+  fi
+  hasNHice $CVDP_DATA_DIR $ncfile
+  if [ $? == 1 ]; then
+    ncks -A -v $ice_vars $CVDP_DATA_DIR/$ncfile $sub_dir/$ncfile
   fi
 done
 
 #plus a couple of obs datasets
-ncks -O -v pr_spatialmean_ann,pr_spatialmean_djf,pr_spatialmean_jja,pr_spatialmean_mam,pr_spatialmean_son,\
-pr_spatialstddev_ann,pr_spatialstddev_djf,pr_spatialstddev_jja,pr_spatialstddev_mam,pr_spatialstddev_son,\
-monsoon_area_AUSMC,monsoon_area_EAS,monsoon_area_NAF,monsoon_area_NAMS,monsoon_area_SAF,monsoon_area_SAMS,\
-monsoon_area_SAS,monsoon_area_global,monsoon_domain,monsoon_rain_AUSMC,monsoon_rain_EAS,monsoon_rain_NAF,\
-monsoon_rain_NAMS,monsoon_rain_SAF,monsoon_rain_SAMS,monsoon_rain_SAS,monsoon_rain_global\
-  $CVDP_DATA_DIR/GPCP.cvdp_data.1979-1999.nc GPCP.cvdp_data.1979-1999.nc
+ncks -O -v pr_spatialmean_ann,pr_spatialmean_djf,pr_spatialmean_jja,pr_spatialstddev_ann,pr_spatialstddev_djf,pr_spatialstddev_jja\
+  $CVDP_DATA_DIR/GPCP.cvdp_data.1979-2019.nc GPCP.cvdp_data.1979-2019.nc
+ncks -O -v $monsoon_vars $CVDP_DATA_DIR/GPCP.cvdp_data.1979-2019.nc GPCP.cvdp_data.1979-2019.nc
 
-ncks -O -v pr_spatialmean_ann,pr_spatialmean_djf,pr_spatialmean_jja,pr_spatialmean_mam,pr_spatialmean_son,\
-pr_spatialstddev_ann,pr_spatialstddev_djf,pr_spatialstddev_jja,pr_spatialstddev_mam,pr_spatialstddev_son,\
-tas_spatialmean_ann,tas_spatialmean_djf,tas_spatialmean_jja,tas_spatialmean_mam,tas_spatialmean_son,\
-tas_spatialstddev_ann,tas_spatialstddev_djf,tas_spatialstddev_jja,tas_spatialstddev_mam,tas_spatialstddev_son,\
-monsoon_area_AUSMC,monsoon_area_EAS,monsoon_area_NAF,monsoon_area_NAMS,monsoon_area_SAF,monsoon_area_SAMS,\
-monsoon_area_SAS,monsoon_area_global,monsoon_domain,monsoon_rain_AUSMC,monsoon_rain_EAS,monsoon_rain_NAF,\
-monsoon_rain_NAMS,monsoon_rain_SAF,monsoon_rain_SAMS,monsoon_rain_SAS,monsoon_rain_global\
-  $CVDP_DATA_DIR/C20-Reanalysis.cvdp_data.1871-2012.nc C20-Reanalysis.cvdp_data.1871-2012.nc
+ncks -O -v $mean_vars $CVDP_DATA_DIR/C20-Reanalysis.cvdp_data.1871-2012.nc C20-Reanalysis.cvdp_data.1871-2012.nc
+ncks -O -v $monsoon_vars $CVDP_DATA_DIR/C20-Reanalysis.cvdp_data.1871-2012.nc C20-Reanalysis.cvdp_data.1871-2012.nc
+ncks -O -v $ice_vars $CVDP_DATA_DIR/C20-Reanalysis.cvdp_data.1871-2012.nc C20-Reanalysis.cvdp_data.1871-2012.nc
 
 #make a .tar.gz archive
 rm PMIP4_midHolocence_cvdp_data.tar.gz
-tar -czf PMIP4_midHolocence_cvdp_data.tar.gz */*.cvdp_data.*-*.nc C20-Reanalysis.cvdp_data.1871-2012.nc GPCP.cvdp_data.1979-1999.nc
+tar -czf PMIP4_midHolocence_cvdp_data.tar.gz */*.cvdp_data.*-*.nc C20-Reanalysis.cvdp_data.1871-2012.nc GPCP.cvdp_data.1979-2019.nc
 cp PMIP4_midHolocence_cvdp_data.tar.gz ~/public_html/PMIPVarData/data/PMIP4_midHolocence_cvdp_data.tar.gz
 
-#Populate for_DMC directory
-mkdir for_DMC
-cd for_DMC
-files=`ls /data/CMIP/curated_ESGF_replica/*/midHolocene-cal-adj/preprocessed/*pollen*.nc`
-for fil in $files
-do
-  ln -s $fil ${fil##*/}
-done
-rm PMIP34_midHolocene_changes_for_DMC.zip
-zip PMIP34_midHolocene_changes_for_DMC.zip *pollen*nc
-cp PMIP34_midHolocene_changes_for_DMC.zip ~/public_html/PMIPVarData/data/PMIP34_midHolocene_changes_for_DMC.zip
+##Populate for_DMC directory
+#mkdir for_DMC
+#cd for_DMC
+#files=`ls /data/CMIP/curated_ESGF_replica/*/midHolocene-cal-adj/preprocessed/*pollen*.nc`
+#for fil in $files
+#do
+#  ln -s $fil ${fil##*/}
+#done
+#rm PMIP34_midHolocene_changes_for_DMC.zip
+#zip PMIP34_midHolocene_changes_for_DMC.zip *pollen*nc
+#cp PMIP34_midHolocene_changes_for_DMC.zip ~/public_html/PMIPVarData/data/PMIP34_midHolocene_changes_for_DMC.zip
