@@ -41,6 +41,17 @@ function hasNHice {
   fi
 }  
 
+# thirdly define a litte function to say whether a netcdf file has the seasonal extent of NH sea ice
+function hasipcc {
+  hasipcc_varnames=`ncdump -h $1/$2 | grep float | cut -d\( -f1 | cut -d\  -f2`
+  if [[ $hasipcc_varnames == *"ipcc_NH_tropics_lnd_tas"* ]]
+  then
+    return 1
+  else
+    return 0
+  fi
+}  
+
 
 #set up some paths and aliases
 CVDP_DATA_DIR="/home/p2f-v/public_html/PMIPVarData/cvdp_data"
@@ -49,6 +60,7 @@ mean_vars="pr_spatialmean_ann,pr_spatialmean_djf,pr_spatialmean_jja,pr_spatialst
 monsoon_vars="monsoon_area_AUSMC,monsoon_area_EAS,monsoon_area_NAF,monsoon_area_NAMS,monsoon_area_SAF,monsoon_area_SAMS,monsoon_area_SAS,monsoon_area_global,monsoon_domain,monsoon_rain_AUSMC,monsoon_rain_EAS,monsoon_rain_NAF,monsoon_rain_NAMS,monsoon_rain_SAF,monsoon_rain_SAMS,monsoon_rain_SAS,monsoon_domain,monsoon_summer_rainrate,monsoon_intensity"
 amoc_vars="amoc_mean_ann,amoc_timeseries_ann"
 ice_vars="sic_nh_extent_climo"
+ipcc_vars="ipcc_GLOBAL_all_tas,ipcc_GLOBAL_lnd_tas,ipcc_GLOBAL_ocn_tas,ipcc_NH_highlats_all_tas,ipcc_NH_highlats_lnd_tas,ipcc_NH_highlats_ocn_tas,ipcc_NH_midlats_all_tas,ipcc_NH_midlats_lnd_tas,ipcc_NH_midlats_ocn_tas,ipcc_NH_tropics_all_tas,ipcc_NH_tropics_lnd_tas,ipcc_NH_tropics_ocn_tas,ipcc_SH_highlats_all_tas,ipcc_SH_highlats_lnd_tas,ipcc_SH_highlats_ocn_tas,ipcc_SH_midlats_all_tas,ipcc_SH_midlats_lnd_tas,ipcc_SH_midlats_ocn_tas,ipcc_SH_tropics_all_tas,ipcc_SH_tropics_lnd_tas,ipcc_SH_tropics_ocn_tas"
 
 #Collect all the relevant data from the files
 cd $CVDP_DATA_DIR
@@ -82,16 +94,21 @@ do
   if [ $? == 1 ]; then
     ncks -A -v $ice_vars $CVDP_DATA_DIR/$ncfile $sub_dir/$ncfile
   fi
+  hasipcc $CVDP_DATA_DIR $ncfile
+  if [ $? == 1 ]; then
+    ncks -A -v $ipcc_vars $CVDP_DATA_DIR/$ncfile $sub_dir/$ncfile
+  fi
 done
 
 #plus a couple of obs datasets
 ncks -O -v pr_spatialmean_ann,pr_spatialmean_djf,pr_spatialmean_jja,pr_spatialstddev_ann,pr_spatialstddev_djf,pr_spatialstddev_jja\
   $CVDP_DATA_DIR/GPCP.cvdp_data.1979-2019.nc GPCP.cvdp_data.1979-2019.nc
-ncks -O -v $monsoon_vars $CVDP_DATA_DIR/GPCP.cvdp_data.1979-2019.nc GPCP.cvdp_data.1979-2019.nc
+ncks -A -v $monsoon_vars $CVDP_DATA_DIR/GPCP.cvdp_data.1979-2019.nc GPCP.cvdp_data.1979-2019.nc
 
 ncks -O -v $mean_vars $CVDP_DATA_DIR/C20-Reanalysis.cvdp_data.1871-2012.nc C20-Reanalysis.cvdp_data.1871-2012.nc
-ncks -O -v $monsoon_vars $CVDP_DATA_DIR/C20-Reanalysis.cvdp_data.1871-2012.nc C20-Reanalysis.cvdp_data.1871-2012.nc
-ncks -O -v $ice_vars $CVDP_DATA_DIR/C20-Reanalysis.cvdp_data.1871-2012.nc C20-Reanalysis.cvdp_data.1871-2012.nc
+ncks -A -v $monsoon_vars $CVDP_DATA_DIR/C20-Reanalysis.cvdp_data.1871-2012.nc C20-Reanalysis.cvdp_data.1871-2012.nc
+ncks -A -v $ice_vars $CVDP_DATA_DIR/C20-Reanalysis.cvdp_data.1871-2012.nc C20-Reanalysis.cvdp_data.1871-2012.nc
+ncks -A -v $ipcc_vars $CVDP_DATA_DIR/C20-Reanalysis.cvdp_data.1871-2012.nc C20-Reanalysis.cvdp_data.1871-2012.nc
 
 #make a .tar.gz archive
 rm PMIP4_midHolocence_cvdp_data.tar.gz

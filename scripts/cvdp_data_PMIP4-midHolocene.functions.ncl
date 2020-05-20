@@ -49,12 +49,7 @@ begin
   else
     QUIET=False
   end if
-  if isStrSubset(name_str,"_") then
-    ;provided string must contain both a gcm and an expt
-    ncfiles=systemfunc("ls "+data_dir+"/*.cvdp_data.[0-9]*-*.nc "+data_dir+"/*/"+name_str+".cvdp_data.[0-9]*-*.nc")
-  else
-    ncfiles=systemfunc("ls "+data_dir+"/*.cvdp_data.[0-9]*-*.nc "+data_dir+"/"+name_str+"/*.cvdp_data.[0-9]*-*.nc")
-  end if
+  ncfiles=systemfunc("ls "+data_dir+"/*.cvdp_data.[0-9]*-*.nc")
   if any(ismissing(ncfiles)) then
     if .not.QUIET then
      print("find_files_wVar: There are no cvdp_data netcdf files in "+data_dir+". You may want to run the download_cvdp_data_data.sh script")
@@ -260,7 +255,7 @@ begin
   lon_range_negi=lon_range.ge.-180.and.lon_range.lt.0
   if any(lon_range_negi) then
     if any(lon_range_posi) then
-      print("extract_latlon_areastat: Your lon_range is ("+lon_range(0)+","+lon_range(0)+") and I don't whether to use longitude of (-180:180) or (0:360)")
+      print("extract_latlon_areastat: Your lon_range is ("+lon_range(0)+","+lon_range(1)+") and I don't whether to use longitude of (-180:180) or (0:360)")
       exit
     else
       var_in=lonFlip(var_in)
@@ -412,18 +407,42 @@ begin
     end if
   end if
   fil=addfile(name_wfullpath,"r")
-  if .not.isfilevar(fil,variable_name) then
-    if NO_EXIT_ON_ERROR then
-      return(missing)
+  if any(variable_name.eq.(/"NWP","NCT"/)) then
+    if .not.isfilevar(fil,"nino34") then
+      if NO_EXIT_ON_ERROR then
+        return(missing)
+      else
+        ;Hard exit if not correct, as only valid files should have been selected with find_files_wVar  
+        print("There is not a "+variable_name+" variable in "+name_wfullpath)
+        exit
+      end if 
+    end if
+    nino3=fil->nino3
+    nino4=fil->nino4
+    alpha=nino3*nino4 ;set up alpha array
+    alpha=where(alpha.gt.0,0.4,0)
+    var_in=nino3
+    if variable_name.eq."NWP" then
+      var_in=nino3-alpha*nino4;NCT
     else
-      ;Hard exit if not correct, as only valid files should have been selected with find_files_wVar  
-      print("There is not a "+variable_name+" variable in "+name_wfullpath)
-      exit
-    end if 
+      var_in=nino4-alpha*nino3;NWP
+    end if
+    delete([/nino3,nino4,alpha/])
+  else
+    if .not.isfilevar(fil,variable_name) then
+      if NO_EXIT_ON_ERROR then
+        return(missing)
+      else
+        ;Hard exit if not correct, as only valid files should have been selected with find_files_wVar  
+        print("There is not a "+variable_name+" variable in "+name_wfullpath)
+        exit
+      end if 
+    end if
+    var_in = fil->$variable_name$
   end if
-  var_in = fil->$variable_name$
+
   read_ts_note=""
-  if .not.(isdim(var_in,"time").or.isdim(var_in,"TIME")) then
+  if .not.(isdim(var_in,"time").or.isdim(var_in,"TIME").or.isdim(var_in,"time_mon").or.isdim(var_in,"time_mon2")) then
     if NO_EXIT_ON_ERROR then
       return(missing)
     else
@@ -564,7 +583,7 @@ begin
     else
       years=cd_calendar(var_out&TIME,4)
     end if
-    var_out = dtrend_msg(years,var_out,False,False)   
+    var_out = dtrend_msg(years,var_out,True,False)
     read_ts_note=read_ts_note+"A linear trend has been removed. "
   end if
 
@@ -607,14 +626,13 @@ function stat_ts_var(name_wfullpath:string,variable_name:string,stat_name:string
 local name_wfullpath,variable_name,ts_opt,fil,poss_stats,stat_name
 begin
   ;read in variable and perform some checks.
-  poss_stats=(/"mean","stddev","skew","kurtosis","pcvar","AnnCycAmp"/)
+  poss_stats=(/"mean","stddev","skew","kurtosis","pcvar","AnnCycAmp","min","max"/)
   if .not.any(poss_stats.eq.stat_name) then
     print("stat_ts_var: The only possible statistics accepted are "+str_join(poss_stats,","))
     exit
   end if
   
   var_in=read_ts(name_wfullpath,variable_name,ts_opt)
-  
   if .not.all(ismissing(var_in)) then  
     if stat_name.eq."AnnCycAmp" then      
       if .not.isatt(var_in,"AnnCycle") then
@@ -624,9 +642,17 @@ begin
         stat_out=max(var_in@AnnCycle)-min(var_in@AnnCycle)
       end if
     else   
-      if stat_name.eq."pcvar" then      
-        pcvar=str_squeeze(str_sub_str(var_in@pcvar,"%"," "))
-        stat_out=stringtofloat(pcvar)
+      if any((/"pcvar","min","max"/).eq.stat_name) then      
+        if stat_name.eq."pcvar" then      
+          pcvar=str_squeeze(str_sub_str(var_in@pcvar,"%"," "))
+          stat_out=stringtofloat(pcvar)
+        end if
+        if stat_name.eq."min" then      
+          stat_out=min(var_in)
+        end if
+        if stat_name.eq."max" then      
+          stat_out=max(var_in)
+        end if
       else
         stats=dim_stat4(var_in)
         stat_ind=ind(poss_stats.eq.stat_name)
@@ -635,7 +661,7 @@ begin
           stat_out=default_fillvalue("float")
           stat_out@_FillValue=default_fillvalue("float")
         else
-          if stat_name.eq."stddev" then
+          if stat_name.eq."stddev" then          
             stat_out=sqrt(stats(stat_ind))
           else
             stat_out=stats(stat_ind)
@@ -752,6 +778,10 @@ begin
   mapres@cnFillOn        = True
   mapres@cnLinesOn       = False
   mapres@cnFillPalette = "BlueDarkRed18"
+  mapres@mpGridAndLimbOn = True
+  mapres@mpGridLatSpacingF =  15.            ; change latitude  line spacing
+  mapres@mpGridLonSpacingF = 15.           ; change longitude line spacing
+
   ;copy across the optional resources
   copy_VarAtts(opt_res,mapres)
 
@@ -769,10 +799,7 @@ begin
     mapres@gsnRightStringFontHeightF = 0.02
     mapres@mpGeophysicalLineColor = "gray42"
     mapres@mpPerimOn    = False
-    mapres@mpGridLatSpacingF =  15.            ; change latitude  line spacing
-    mapres@mpGridLonSpacingF = 15.           ; change longitude line spacing
     mapres@mpGridLineColor   = "transparent"  ; trick ncl into drawing perimeter
-    mapres@mpGridAndLimbOn   = True           ; turn on lat/lon lines  
   end if
   
   ;load in the optional ones
@@ -847,8 +874,13 @@ begin
         end if
         if NORMALISE then
           this_patt=read_latlon_var(fnames(mod_i),variable_name(var_i),True)
-          norm_attrs(mod_i)=this_patt@$name_to_normalise_by$
-          patt(mod_i,:,:)=(/this_patt/norm_attrs(mod_i)/)
+          if (name_to_normalise_by.eq."relative_to_plot_area_average") then
+            norm_attrs(mod_i)=extract_latlon_areastat(fnames(mod_i),variable_name(var_i),(/mapres@mpMinLatF,mapres@mpMaxLatF/),(/mapres@mpMinLonF,mapres@mpMaxLonF/),"mean")
+            patt(mod_i,:,:)=(/this_patt-norm_attrs(mod_i)/)
+          else
+            norm_attrs(mod_i)=this_patt@$name_to_normalise_by$
+            patt(mod_i,:,:)=(/this_patt/norm_attrs(mod_i)/)
+          end if
           delete(this_patt)
         else
           patt(mod_i,:,:)=read_latlon_var(fnames(mod_i),variable_name(var_i),True)
@@ -1035,6 +1067,10 @@ begin
   mapres@mpCenterLonF = -20.
   mapres@mpOutlineOn = True  
   mapres@cnFillPalette = "BlueWhiteOrangeRed"
+  mapres@mpGridAndLimbOn = True
+  mapres@mpGridLatSpacingF =  15.            ; change latitude  line spacing
+  mapres@mpGridLonSpacingF = 15.           ; change longitude line spacing
+
   copy_VarAtts(opt_res,mapres)
 
   ;use mpProjection as a supra-option
@@ -1234,10 +1270,19 @@ begin
           print("Loading "+variable_name(var_i)+" from file "+mod_i+":"+fnames_both(mod_i,:))
         end if
         if NORMALISE then
-          this_patt=read_latlon_var(fnames_both(mod_i,0),variable_name(var_i),True)
-          patt(mod_i,0,:,:)=(/this_patt/this_patt@$name_to_normalise_by$/)
-          this_patt=read_latlon_var(fnames_both(mod_i,1),variable_name(var_i),True)
-          patt(mod_i,1,:,:)=(/this_patt/this_patt@$name_to_normalise_by$/)
+          if (name_to_normalise_by.eq."relative_to_plot_area_average") then
+            this_patt=read_latlon_var(fnames_both(mod_i,0),variable_name(var_i),True)
+            this_paa=extract_latlon_areastat(fnames_both(mod_i,0),variable_name(var_i),(/mapres@mpMinLatF,mapres@mpMaxLatF/),(/mapres@mpMinLonF,mapres@mpMaxLonF/),"mean")
+            patt(mod_i,0,:,:)=(/this_patt-this_paa/)
+            this_patt=read_latlon_var(fnames_both(mod_i,1),variable_name(var_i),True)
+            this_paa=extract_latlon_areastat(fnames_both(mod_i,1),variable_name(var_i),(/mapres@mpMinLatF,mapres@mpMaxLatF/),(/mapres@mpMinLonF,mapres@mpMaxLonF/),"mean")
+            patt(mod_i,1,:,:)=(/this_patt-this_paa/)
+          else
+            this_patt=read_latlon_var(fnames_both(mod_i,0),variable_name(var_i),True)
+            patt(mod_i,0,:,:)=(/this_patt/this_patt@$name_to_normalise_by$/)
+            this_patt=read_latlon_var(fnames_both(mod_i,1),variable_name(var_i),True)
+            patt(mod_i,1,:,:)=(/this_patt/this_patt@$name_to_normalise_by$/)
+          end if
           delete(this_patt)
         else
           patt(mod_i,0,:,:)=read_latlon_var(fnames_both(mod_i,0),variable_name(var_i),True)
@@ -1902,7 +1947,7 @@ begin
   ;check to see if either str identifies a single simulation
   fnames_a=find_files_wVar(expt_str_a,variable_name)
   fnames_b=find_files_wVar(expt_str_b,variable_name)
-  if dimsizes(fnames_a).eq.1.or.dimsizes(fnames_b).eq.1.and..not.all(ismissing(fnames_a)) then
+  if dimsizes(fnames_a).eq.1.or.dimsizes(fnames_b).eq.1 then
     str=expt_str_a+"_source_files"
     fAtt@$str$   =  str_join(fnames_a,",")
     str=expt_str_b+"_source_files"
@@ -2102,25 +2147,23 @@ begin
   end if
     
   ;use modified version of symMinMaxPlt to spread 5-95% range
-  if .not.isatt(mapres,"cnLevelSelectionMode") then
-    stats=stat_dispersion(ensmn_diff,False)
-    if RATIO then
-      cmnmx=max((/fabs(stats(24)-1), fabs(stats(25)-1)/))
-      mnmxint = nice_mnmxintvl(1-cmnmx,1+cmnmx,20,True)
-    else
-      cmnmx=max((/fabs(stats(24)), fabs(stats(25))/) )
-      mnmxint = nice_mnmxintvl( -cmnmx, cmnmx,20,True)
-    end if
-    mapres@cnLevelSelectionMode = "ManualLevels"   
-    mapres@cnMinLevelValF       = mnmxint(0)
-    mapres@cnMaxLevelValF       = mnmxint(1)
-    if (isnan_ieee(mnmxint(2))) then            ; extreme case
-      mapres@cnLevelSpacingF  = 1.0
-    else
-      mapres@cnLevelSpacingF  = mnmxint(2)
-    end if
+  stats=stat_dispersion(ensmn_diff,False)
+  if RATIO then
+    cmnmx=max((/fabs(stats(24)-1), fabs(stats(25)-1)/))
+    mnmxint = nice_mnmxintvl(1-cmnmx,1+cmnmx,20,True)
+  else
+    cmnmx=max((/fabs(stats(24)), fabs(stats(25))/) )
+    mnmxint = nice_mnmxintvl( -cmnmx, cmnmx,20,True)
   end if
-
+  mapres@cnLevelSelectionMode = "ManualLevels"   
+  mapres@cnMinLevelValF       = mnmxint(0)
+  mapres@cnMaxLevelValF       = mnmxint(1)
+  if (isnan_ieee(mnmxint(2))) then            ; extreme case
+    mapres@cnLevelSpacingF  = 1.0
+  else
+    mapres@cnLevelSpacingF  = mnmxint(2)
+  end if
+   
   if OVERLAY_CONTROL then
     res2 = True
     res2@cnLevelSelectionMode = "ManualLevels"     ; set manual contour levels
@@ -2158,7 +2201,7 @@ begin
     else
       ;default confidence level is 0.66 (i.e. IPCC's "likely")
       ;pick a number just below 2/3 to make sure that 2 of 3 sims gets colored.
-      confidence_level=0.655 
+      confidence_level=0.655
     end if
     conf_res@cnLevelSelectionMode = "ExplicitLevels"
     conf_res@gsnRightString=""
