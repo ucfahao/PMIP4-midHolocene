@@ -9,7 +9,7 @@ plots_dir="../plots/"
 ;some plot switches
 EARLY_INDUSTRIAL=True; uses a 1871-1900 climatological period rather than a 1971-2000 one. 
 CMIP5=False; uses only the old models
-lig127k=True; plot CMIP6 for the lig127k ensemble instead of the midHolocene one. 
+lig127k=False; plot CMIP6 for the lig127k ensemble instead of the midHolocene one. 
 VERBOSE=False ;if True, provides a modicum of more information about whats going on in the plots - used for debugging mainly.
 OUTPUT_TYPE="pdf"; either "png" or "pdf"
 INC_PREIND_wHIST=True; adds the preindustrial to all the plots including the Historical 

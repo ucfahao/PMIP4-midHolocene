@@ -5,7 +5,8 @@
 
 load "scripts/cvdp_data_PMIP4-midHolocene.functions.ncl"
 
-PRINT_OUT_CSV=True
+PRINT_OUT_INDIVIDUAL_CSV=True
+PRINT_OUT_COMBINED_CSV=False
 OVERWRITE_INTERIM=True
 
 ;work out what models we have...
@@ -23,7 +24,7 @@ expts=(/"piControl","midHolocene","midHolocene-cal-adj"/)
 expt_id=ispan(0, dimsizes(expts)-1,1)
 expts!0="expt_id"
 expts&expt_id=expt_id
-timeseries=(/"ipcc_GLOBAL_all_tas","ipcc_GLOBAL_lnd_tas","ipcc_GLOBAL_ocn_tas","ipcc_NH_highlats_all_tas","ipcc_NH_highlats_lnd_tas","ipcc_NH_highlats_ocn_tas","ipcc_NH_midlats_all_tas","ipcc_NH_midlats_lnd_tas","ipcc_NH_midlats_ocn_tas","ipcc_NH_tropics_all_tas","ipcc_NH_tropics_lnd_tas","ipcc_NH_tropics_ocn_tas","ipcc_SH_highlats_all_tas","ipcc_SH_highlats_lnd_tas","ipcc_SH_highlats_ocn_tas","ipcc_SH_midlats_all_tas","ipcc_SH_midlats_lnd_tas","ipcc_SH_midlats_ocn_tas","ipcc_SH_tropics_all_tas","ipcc_SH_tropics_lnd_tas","ipcc_SH_tropics_ocn_tas","ipcc_ARC_lnd_tas"/)
+timeseries=(/"ipcc_GLOBAL_all_tas","tas_global_avg_ann","ipcc_GLOBAL_lnd_tas","ipcc_GLOBAL_ocn_tas","sst_global_avg_ann","ipcc_NH_highlats_all_tas","ipcc_NH_highlats_lnd_tas","ipcc_NH_highlats_ocn_tas","ipcc_NH_midlats_all_tas","ipcc_NH_midlats_lnd_tas","ipcc_NH_midlats_ocn_tas","ipcc_NH_tropics_all_tas","ipcc_NH_tropics_lnd_tas","ipcc_NH_tropics_ocn_tas","ipcc_SH_highlats_all_tas","ipcc_SH_highlats_lnd_tas","ipcc_SH_highlats_ocn_tas","ipcc_SH_midlats_all_tas","ipcc_SH_midlats_lnd_tas","ipcc_SH_midlats_ocn_tas","ipcc_SH_tropics_all_tas","ipcc_SH_tropics_lnd_tas","ipcc_SH_tropics_ocn_tas"/)
 timeseries_id=ispan(0, dimsizes(timeseries)-1,1)
 timeseries!0="timeseries_id"
 timeseries&timeseries_id=timeseries_id
@@ -42,7 +43,7 @@ if .not.fileexists(interim_filename).or.OVERWRITE_INTERIM then
     do expt_i=0,dimsizes(expts)-1
       ;filenames=systemfunc("ls data/"+expts(expt_i)+"/"+models(mod_i)+"_"+expts(expt_i)+".cvdp_data.*-*.nc 2>/dev/null")
       filenames=systemfunc("ls ~p2f-v/public_html/PMIPVarData/cvdp_data/"+models(mod_i)+"_"+expts(expt_i)+".cvdp_data.*-*.nc 2>/dev/null")
-      if all(ismissing(filenames)) then 
+      if all(ismissing(filenames)).or.isStrSubset(filenames,"KCM").or.isStrSubset(filenames,"EC-EARTH") then 
         ipcc_array(mod_i,expt_i,:)=ipcc_array@_FillValue
       else ;file exists
         if dimsizes(filenames).ne.1 then
@@ -60,7 +61,15 @@ if .not.fileexists(interim_filename).or.OVERWRITE_INTERIM then
             ts_opt@DETREND=True
           end if
           do ts_i=0,dimsizes(timeseries)-1
-            ipcc_array(mod_i,expt_i,ts_i)=(/stat_ts_var(filenames,timeseries(ts_i),"mean",ts_opt)/)
+            if timeseries(ts_i).eq."tas_global_avg_ann" then
+              ipcc_array(mod_i,expt_i,ts_i)=extract_latlon_areastat(filenames,"tas_spatialmean_ann",(/-90,90/),(/0,360/),"mean")
+ 	    else
+              if timeseries(ts_i).eq."sst_global_avg_ann" then
+                ipcc_array(mod_i,expt_i,ts_i)=extract_latlon_areastat(filenames,"sst_spatialmean_ann",(/-90,90/),(/0,360/),"mean")
+              else
+                ipcc_array(mod_i,expt_i,ts_i)=(/stat_ts_var(filenames,timeseries(ts_i),"mean",ts_opt)/)
+	      end if
+            end if
           end do ;ts_i
           delete(ts_opt)
         end if; dimsizes(filenames).ne.1
@@ -80,7 +89,7 @@ else
   ipcc_array=ifil->ipcc_array
 end if
 
-if PRINT_OUT_CSV then
+if PRINT_OUT_INDIVIDUAL_CSV then
   ;write out values for each timeseries
   hlist=[/"MODEL,"+str_join(expts,",")/]
   ;mean 
@@ -101,5 +110,27 @@ if PRINT_OUT_CSV then
     write_table(fname, "a", alist,format_string)
     delete([/alist,values,format_string,fname/])
   end do ;loop over timeseries 
+  delete(hlist)
+end if
+
+if PRINT_OUT_COMBINED_CSV then
+  ;write out values for each timeseries
+  hlist=[/"dT,"+str_join(models,",")/]
+  ;mean 
+  fname="data/ipcc_combined.csv"
+  write_table(fname, "w", hlist, "%s ")
+  alist=NewList("lifo")
+  ListAppend(alist,timeseries)
+  format_string="%s"
+  do model_i=0,dimsizes(models)-1
+    values=ipcc_array(model_i,1,:)-ipcc_array(model_i,0,:)
+    values@_FillValue=-999.
+    str = unique_string("polymarker")
+    values@$str$=values
+    ListAppend(alist,values@$str$)
+    format_string=format_string+",%5.2f"
+  end do
+  write_table(fname, "a", alist,format_string)
+  delete([/alist,values,format_string,fname/])
   delete(hlist)
 end if

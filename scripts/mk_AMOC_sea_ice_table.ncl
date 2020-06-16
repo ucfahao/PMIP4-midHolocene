@@ -10,8 +10,8 @@ PRINT_OUT_CSV=True
 OVERWRITE_INTERIM=True
 
 ;work out what models we have...
-;mh_files=systemfunc("ls data/midHolocene/")
-mh_files=systemfunc("(cd ~p2f-v/public_html/PMIPVarData/cvdp_data/ ; ls *_midHolocene.*nc)")
+mh_files=systemfunc("ls data/midHolocene/")
+;mh_files=systemfunc("(cd ~p2f-v/public_html/PMIPVarData/cvdp_data/ ; ls *_midHolocene.*nc)")
 models=new(dimsizes(mh_files),string)
 do mod_i=0,dimsizes(mh_files)-1
   bit_parts=str_split(mh_files(mod_i), "_")
@@ -40,8 +40,8 @@ if .not.fileexists(interim_filename).or.OVERWRITE_INTERIM then
   setfileoption("nc", "Format",  "NetCDF4")
   do mod_i=0,dimsizes(models)-1
     do expt_i=0,dimsizes(expts)-1
-      ;filenames=systemfunc("ls data/"+expts(expt_i)+"/"+models(mod_i)+"_"+expts(expt_i)+".cvdp_data.*-*.nc 2>/dev/null")
-      filenames=systemfunc("ls ~p2f-v/public_html/PMIPVarData/cvdp_data/"+models(mod_i)+"_"+expts(expt_i)+".cvdp_data.*-*.nc 2>/dev/null")
+      filenames=systemfunc("ls data/"+expts(expt_i)+"/"+models(mod_i)+"_"+expts(expt_i)+".cvdp_data.*-*.nc 2>/dev/null")
+      ;filenames=systemfunc("ls ~p2f-v/public_html/PMIPVarData/cvdp_data/"+models(mod_i)+"_"+expts(expt_i)+".cvdp_data.*-*.nc 2>/dev/null")
       if all(ismissing(filenames)) then 
         modes_array(mod_i,expt_i,:)=modes_array@_FillValue
       else ;file exists

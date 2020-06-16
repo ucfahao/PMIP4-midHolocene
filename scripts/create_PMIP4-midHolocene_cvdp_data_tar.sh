@@ -111,9 +111,9 @@ ncks -A -v $ice_vars $CVDP_DATA_DIR/C20-Reanalysis.cvdp_data.1871-2012.nc C20-Re
 ncks -A -v $ipcc_vars $CVDP_DATA_DIR/C20-Reanalysis.cvdp_data.1871-2012.nc C20-Reanalysis.cvdp_data.1871-2012.nc
 
 #make a .tar.gz archive
-rm PMIP4_midHolocence_cvdp_data.tar.gz
-tar -czf PMIP4_midHolocence_cvdp_data.tar.gz */*.cvdp_data.*-*.nc C20-Reanalysis.cvdp_data.1871-2012.nc GPCP.cvdp_data.1979-2019.nc
-cp PMIP4_midHolocence_cvdp_data.tar.gz ~/public_html/PMIPVarData/data/PMIP4_midHolocence_cvdp_data.tar.gz
+#rm PMIP4_midHolocence_cvdp_data.tar.gz
+#tar -czf PMIP4_midHolocence_cvdp_data.tar.gz */*.cvdp_data.*-*.nc C20-Reanalysis.cvdp_data.1871-2012.nc GPCP.cvdp_data.1979-2019.nc
+#cp PMIP4_midHolocence_cvdp_data.tar.gz ~/public_html/PMIPVarData/data/PMIP4_midHolocence_cvdp_data.tar.gz
 
 ##Populate for_DMC directory
 #mkdir for_DMC
