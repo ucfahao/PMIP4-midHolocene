@@ -88,11 +88,11 @@ OUTPUT_TYPE="pdf"
  
   expts=(/"piControl","midHolocene","midHolocene-cal-adj","lgm","lig127k","1pctCO2","abrupt4xCO2"/)
   expts_color=(/"grey24","darkgreen","darkgreen","dodgerblue4","yellowgreen","firebrick","orangered2"/)
-  gcms=(/"AWI-CM-1-1-LR","BCC-CSM1-1","CCSM4","CESM2","CNRM-CM5","COSMOS-ASO","CSIRO-Mk3-6-0","CSIRO-Mk3L-1-2","EC-EARTH-2-2","FGOALS-g3","FGOALS-f3-L","FGOALS-g2","FGOALS-s2","GISS-E2-1-G","GISS-E2-R","HadCM3","HadGEM2-CC","HadGEM2-ES","HadGEM3-GC31","INM-CM4-8","IPSL-CM5A-LR","IPSL-CM6A-LR","KCM1-2-2","MIROC-ES2L","MIROC-ESM","MPI-ESM-P","MRI-CGCM3","MRI-ESM2-0","NESM3","NorESM1-F","UofT-CCSM-4"/)
-  ECS=(/ 3.6           ,3.1         , 2.9   , 5.2   , 3.3      , -999.      , 4.1           , 3.1            , 4.2          ,2.9        ,3.           , 3.7       , 4.5       , 2.7         , 2.1       , 3.3    , 4.5        , 4.6        , 5.4          ,2.1        ,4.1           , 4.5          , -999.    ,2.66        , 4.7       , 3.5       , 2.6       , 3.1        , 3.7   ,2.29     , 3.2/)
-  isCMIP6=(/True           ,False       ,False  ,True   ,False     ,False       ,False          ,False           ,False         ,True       ,True         ,False      ,False      ,True         ,False      ,False   ,False       ,False       ,True          ,True       ,False         ,True          ,False     ,True        ,False      ,False      ,False      ,True       ,True   ,True       ,True/)
+  gcms=(/"AWI-ESM-1-1-LR","BCC-CSM1-1","CCSM4","CESM2","CNRM-CM5","COSMOS-ASO","CSIRO-Mk3-6-0","CSIRO-Mk3L-1-2","EC-EARTH-2-2","EC-Earth3-LR","FGOALS-g3","FGOALS-f3-L","FGOALS-g2","FGOALS-s2","GISS-E2-1-G","GISS-E2-R","HadCM3","HadGEM2-CC","HadGEM2-ES","HadGEM3-GC31-LL","INM-CM4-8","IPSL-CM5A-LR","IPSL-CM6A-LR","KCM1-2-2","MIROC-ES2L","MIROC-ESM","MPI-ESM1-2-LR","MPI-ESM-P","MRI-CGCM3","MRI-ESM2-0","NESM3","NorESM1-F","NorESM2-LM","UofT-CCSM-4"/)
+  ECS=(/ 3.6             ,3.1         , 2.9   , 5.2   , 3.3      , -999.      , 4.1           , 3.1            , 4.2          ,4.3           ,2.9        ,3.           , 3.7       , 4.5       , 2.7         , 2.1       , 3.3    , 4.5        , 4.6        , 5.4             ,2.1        ,4.1           , 4.5          , -999.    ,2.66        , 4.7       ,2.8            , 3.5       , 2.6       , 3.1        , 3.7   ,2.29       ,2.5         , 3.2/)
+  isCMIP6=(/True         ,False       ,False  ,True   ,False     ,False       ,False          ,False           ,False         ,True          ,True       ,True         ,False      ,False      ,True         ,False      ,False   ,False       ,False       ,True             ,True       ,False         ,True          ,False     ,True        ,False      ,True           ,False      ,False      ,True        ,True   ,True       ,True        ,True/)
   ECS@_FillValue=-999.
-  alphabet=(/"a","b","c","d","e","f","g","h","i","j","k","l"/)
+  alphabet=(/"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o"/)
 
   plotname="SCATTER_"+SCATTER_X_EXPT+"-expt_"+SCATTER_X_STAT+"_"+SCATTER_X_VARNAME+"_vs_"+SCATTER_Y_EXPT+"-expt_"+SCATTER_Y_STAT+"_"+SCATTER_Y_VARNAME+"."+OUTPUT_TYPE
 
